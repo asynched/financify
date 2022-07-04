@@ -11,7 +11,9 @@ export default function ExpenseBalance({ expensesSnapshot }) {
 
   const incomesTotal = sum(incomes, (e) => e.amount)
   const expensesTotal = sum(expenses, (e) => e.amount)
-  const balance = incomesTotal - expensesTotal
+
+  const balance = incomesTotal + expensesTotal
+
   return (
     <div className="mb-8 grid grid-cols-3 px-4 -mt-8 pb-2 gap-2">
       <div className="p-4 bg-white shadow-lg rounded-lg">

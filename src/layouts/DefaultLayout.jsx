@@ -10,7 +10,7 @@ import AppBar from '@/components/AppBar'
 export default function DefaultLayout({ appBarActive, children }) {
   return (
     <div className="relative min-h-screen bg-gray-100">
-      {children}
+      <div className="pb-20">{children}</div>
       <AppBar active={appBarActive} />
     </div>
   )

@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { collection, query, where } from 'firebase/firestore'
 
 import { firestore } from '@/firebase'
+import { getDateRange } from '@/utils/date'
 import useSnapshot from '@/hooks/firebase/useSnapshot'
 import useAuth from '@/hooks/firebase/useAuth'
 import useToggle from '@/hooks/useToggle'
@@ -29,22 +30,27 @@ export default function Dashboard() {
 const DashboardPage = () => {
   const user = useAuth()
 
-  const regularExpensesQuery = useMemo(
-    () => collection(firestore, 'expenses', user.uid, 'items'),
-    [user]
-  )
+  const expensesQuery = useMemo(() => {
+    const { current, previous } = getDateRange()
+    return query(
+      collection(firestore, 'expenses', user.uid, 'items'),
+      where('createdAt', '>=', previous),
+      where('createdAt', '<=', current),
+      where('recurring', '==', false)
+    )
+  }, [user])
 
-  const nonRecurringExpensesQuery = useMemo(
+  const recurringExpensesQuery = useMemo(
     () =>
       query(
         collection(firestore, 'expenses', user.uid, 'items'),
-        where('recurring', '==', false)
+        where('recurring', '==', true)
       ),
     [user]
   )
 
-  const expensesSnapshot = useSnapshot(regularExpensesQuery)
-  const nonRecurringExpensesSnapshot = useSnapshot(nonRecurringExpensesQuery)
+  const recurringExpensesSnapshot = useSnapshot(recurringExpensesQuery)
+  const expensesSnapshot = useSnapshot(expensesQuery)
 
   const [showCreateModal, toggleCreateModal] = useToggle()
 
@@ -74,12 +80,30 @@ const DashboardPage = () => {
         </div>
       </div>
       <ExpenseBalance expensesSnapshot={expensesSnapshot} />
-      <div className="px-4 text-gray-600">
-        <h2 className="mb-4 text-gray-900 text-2xl font-bold tracking-tighter">
-          Activity
-        </h2>
+      <div className="mb-8 px-4 text-gray-600">
+        <div className="mb-4">
+          <h2 className="text-gray-900 text-2xl font-bold tracking-tighter">
+            Activity
+          </h2>
+          <p>List of current activities (non recurring)</p>
+        </div>
         <ExpensesList
-          expensesSnapshot={nonRecurringExpensesSnapshot}
+          expensesSnapshot={expensesSnapshot}
+          onEditClick={(expense) => {
+            setEditExpense(expense)
+            toggleEditModal()
+          }}
+        />
+      </div>
+      <div className="px-4 text-gray-600">
+        <div className="mb-4">
+          <h2 className="text-gray-900 text-2xl font-bold tracking-tighter">
+            Recurring items
+          </h2>
+          <p>List of recurring expenses</p>
+        </div>
+        <ExpensesList
+          expensesSnapshot={recurringExpensesSnapshot}
           onEditClick={(expense) => {
             setEditExpense(expense)
             toggleEditModal()

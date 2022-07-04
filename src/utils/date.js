@@ -13,3 +13,15 @@ export const formatDate = (date) => {
     year: 'numeric',
   }).format(date)
 }
+
+export const getDateRange = (monthsDiff = 1) => {
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  return {
+    current: new Date(year, month, day),
+    previous: new Date(year, month - monthsDiff, day),
+  }
+}
