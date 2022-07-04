@@ -1,8 +1,8 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
 import { auth } from '@/firebase'
-import { useNavigate } from 'react-router-dom'
 
 const googleProvider = new GoogleAuthProvider()
 
@@ -16,14 +16,23 @@ export default function Login() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <button
-        className="bg-red-600 py-1 px-2 text-white"
-        onClick={handleSignIn}
-      >
-        Google
-      </button>
+    <div className="h-screen bg-gray-100 grid place-items-center">
+      <div className="flex flex-col items-center">
+        <h1 className="text-4xl font-bold tracking-tighter">
+          Login - Financify
+        </h1>
+        <div className="mt-4 flex flex-col gap-2 w-[90%] max-w-[512px]">
+          <button
+            className="bg-red-600 py-2 text-white rounded-lg"
+            onClick={handleSignIn}
+          >
+            Google
+          </button>
+          <button className="bg-gray-900 text-white py-2 rounded-lg">
+            GitHub
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

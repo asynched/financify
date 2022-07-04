@@ -13,7 +13,7 @@ export default function Input({
       <label htmlFor={name}>{text}</label>
       <input
         placeholder={placeholder}
-        className="border border-gray-300 transition ease-in-out focus:ring-purple-600 focus:ring-2 focus:border-transparent"
+        className="border rounded-lg border-gray-300 transition ease-in-out focus:ring-purple-600 focus:ring-2 focus:border-transparent"
         type={type}
         id={name}
         name={name}

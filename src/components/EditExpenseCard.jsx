@@ -1,48 +1,64 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import createBox, { useBoxForm } from 'blackbox.js'
 
 import { preventDefault } from '@/utils/ui'
-import { createExpense } from '@/firebase/impl/expenses'
+import { noop } from '@/utils/functional'
+import { deleteExpense, updateExpense } from '@/firebase/impl/expenses'
 
+import Modal from '@/components/ui/Modal'
+import Input from '@/components/Input'
 import useAuth from '@/hooks/firebase/useAuth'
 
-import Input from '@/components/Input'
-import Modal from '@/components/ui/Modal'
-
-const expenseBox = createBox({
+const editExpenseBox = createBox({
   title: '',
-  amount: '',
   description: '',
+  amount: '',
   recurring: false,
   day: '',
 })
 
-export default function CreateExpenseModal({ show, toggle }) {
+export default function EditExpenseCard({ show, toggle, expense }) {
   const user = useAuth()
-  const [expenseForm, register] = useBoxForm(expenseBox)
+  const [expenseForm, register] = useBoxForm(editExpenseBox)
 
   const toggleRecurring = () => {
-    expenseBox.set((s) => ({
+    editExpenseBox.set((s) => ({
       ...s,
       recurring: !s.recurring,
     }))
   }
 
-  const handleSubmit = async () => {
-    await createExpense(expenseForm, user.uid)
+  const handleDelete = async () => {
+    await deleteExpense(expense.id, user.uid)
     toggle()
   }
 
+  const handleUpdate = async () => {
+    await updateExpense(expense.id, user.uid, {
+      ...expenseForm,
+      amount: +expenseForm.amount,
+    })
+    toggle()
+  }
+
+  useEffect(() => {
+    if (expense) {
+      editExpenseBox.set(() => {
+        return { ...expense }
+      })
+    }
+  }, [expense])
+
   return (
     <Modal
-      title="Create new expense"
-      description="Fill in the form with your expense information"
       show={show}
       toggle={toggle}
+      title="Edit expense"
+      description="Fill in with the info you want to edit."
     >
       <form
-        onSubmit={preventDefault(handleSubmit)}
-        className="mt-4 flex flex-col gap-4"
+        onSubmit={preventDefault(noop)}
+        className="mt-4 flex flex-col gap-2"
       >
         <Input
           name="title"
@@ -83,8 +99,17 @@ export default function CreateExpenseModal({ show, toggle }) {
             {...register('day')}
           />
         )}
-        <button className="rounded-lg mt-2 bg-gradient-to-r from-blue-600 via-purple-500 to-pink-600 py-2 text-white font-bold tracking-tight transition ease-in-out hover:brightness-110">
-          Create
+        <button
+          onClick={handleDelete}
+          className="mt-2 py-2 border font-bold tracking-tighter text-purple-500 border-purple-500 rounded-lg transition ease-in-out hover:bg-purple-500 hover:text-white"
+        >
+          Delete
+        </button>
+        <button
+          onClick={handleUpdate}
+          className="rounded-lg mt-1 bg-gradient-to-r from-blue-600 via-purple-500 to-pink-600 py-2 text-white font-bold tracking-tighter transition ease-in-out hover:brightness-110"
+        >
+          Save
         </button>
       </form>
     </Modal>

@@ -3,6 +3,8 @@ export const pipeable = (source) => ({
   pipe: (fn) => pipeable(fn(source)),
 })
 
+export const noop = () => void 0
+
 /**
  * @template T Array type.
  * @param { Array<T> } source Source iterable to partition.
@@ -33,3 +35,5 @@ export const partition = (source, predicate) => {
 export const sum = (source, predicate) => {
   return source.reduce((total, item) => total + predicate(item), 0)
 }
+
+export const valueOrDefault = ($default) => (value) => value || $default

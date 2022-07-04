@@ -1,25 +1,44 @@
-import useAuth from '@/hooks/firebase/useAuth'
-import DefaultLayout from '@/layouts/DefaultLayout'
-import { formatDate } from '@/utils/date'
 import React from 'react'
+import { signOut } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
+
+import { auth } from '@/firebase'
+import { formatDate } from '@/utils/date'
+
+import useAuth from '@/hooks/firebase/useAuth'
+
+import { LogoutIcon } from '@heroicons/react/outline'
+import DefaultLayout from '@/layouts/DefaultLayout'
 
 export default function Profile() {
-  const auth = useAuth()
+  const user = useAuth()
+  const navigate = useNavigate()
+
+  const signOutUser = () => {
+    signOut(auth).then(() => navigate('/'))
+  }
 
   return (
-    <DefaultLayout>
+    <DefaultLayout appBarActive="profile">
       <div className="text-gray-600 h-screen flex flex-col items-center justify-center">
         <img
-          src={auth?.photoURL}
-          alt={auth?.displayName}
+          src={user?.photoURL}
+          alt={user?.displayName}
           referrerPolicy="no-referrer"
           className="rounded-full mb-4 h-32 w-32"
         />
-        <h1 className="text-4xl text-gray-900 font-bold tracking-tighter">
-          {auth?.displayName}
+        <h1 className="mb-4 text-4xl text-gray-900 font-bold tracking-tighter">
+          {user?.displayName}
         </h1>
-        <p>{auth?.email}</p>
-        <p>Joined in {formatDate(new Date(auth?.metadata.creationTime))}.</p>
+        <p>{user?.email}</p>
+        <p>Joined in {formatDate(new Date(user?.metadata.creationTime))}.</p>
+        <button
+          onClick={signOutUser}
+          className="mt-8 bg-red-600 text-white py-2 px-4 rounded-lg flex items-center gap-2"
+        >
+          Log off
+          <LogoutIcon className="w-4 h-4" />
+        </button>
       </div>
     </DefaultLayout>
   )
