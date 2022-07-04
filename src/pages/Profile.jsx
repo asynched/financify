@@ -9,6 +9,7 @@ import useAuth from '@/hooks/firebase/useAuth'
 
 import { LogoutIcon } from '@heroicons/react/outline'
 import DefaultLayout from '@/layouts/DefaultLayout'
+import Title from '@/components/utils/Title'
 
 export default function Profile() {
   const user = useAuth()
@@ -20,6 +21,7 @@ export default function Profile() {
 
   return (
     <DefaultLayout appBarActive="profile">
+      <Title>Financify | Profile</Title>
       <div className="text-gray-600 h-screen flex flex-col items-center justify-center">
         <img
           src={user?.photoURL}

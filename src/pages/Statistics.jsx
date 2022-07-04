@@ -19,6 +19,7 @@ import {
 import Loading from '@/components/ui/Loading'
 import WaitForProperty from '@/components/utils/WaitForProperty'
 import DefaultLayout from '@/layouts/DefaultLayout'
+import Title from '@/components/utils/Title'
 
 export default function Statistics() {
   const user = useAuth()
@@ -93,6 +94,7 @@ const StatisticsPage = () => {
 
   return (
     <DefaultLayout appBarActive="stats">
+      <Title>Financify | Statistics</Title>
       <div className="p-8 text-gray-600">
         <h1 className="text-gray-900 text-4xl font-bold tracking-tighter">
           Statistics

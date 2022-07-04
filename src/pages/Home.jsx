@@ -14,6 +14,7 @@ import ExpenseBalance from '@/components/ExpenseBalance'
 import WaitForProperty from '@/components/utils/WaitForProperty'
 import EditExpenseCard from '@/components/EditExpenseCard'
 import Loading from '@/components/ui/Loading'
+import Title from '@/components/utils/Title'
 
 export default function Dashboard() {
   const user = useAuth()
@@ -59,6 +60,7 @@ const DashboardPage = () => {
 
   return (
     <DefaultLayout appBarActive="home">
+      <Title>Financify | Home</Title>
       <EditExpenseCard
         expense={editExpense}
         show={showEditModal}

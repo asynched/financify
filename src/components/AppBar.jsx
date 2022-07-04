@@ -23,7 +23,7 @@ export default function AppBar({ active }) {
     <div className="py-4 fixed w-full bottom-0 flex gap-2 items-center justify-around bg-white border-t text-gray-600">
       <Link to="/home" aria-label="Home" className="flex flex-col items-center">
         {active === 'home' ? (
-          <HomeIconSolid className="w-6 h-6" />
+          <HomeIconSolid className="text-gray-900 w-6 h-6" />
         ) : (
           <HomeIcon className="w-6 h-6" />
         )}
@@ -34,7 +34,7 @@ export default function AppBar({ active }) {
         className="flex flex-col items-center"
       >
         {active === 'stats' ? (
-          <ChartBarIconSolid className="w-6 h-6" />
+          <ChartBarIconSolid className="text-gray-900 w-6 h-6" />
         ) : (
           <ChartBarIcon className="w-6 h-6" />
         )}
@@ -45,7 +45,7 @@ export default function AppBar({ active }) {
         className="flex flex-col items-center"
       >
         {active === 'profile' ? (
-          <UserCircleIconSolid className="w-6 h-6" />
+          <UserCircleIconSolid className="text-gray-900 w-6 h-6" />
         ) : (
           <UserCircleIcon className="w-6 h-6" />
         )}

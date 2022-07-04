@@ -10,6 +10,7 @@ import { auth } from '@/firebase'
 
 import { FcGoogle } from 'react-icons/fc'
 import { FaGithub } from 'react-icons/fa'
+import Title from '@/components/utils/Title'
 
 const googleProvider = new GoogleAuthProvider()
 const githubProvider = new GithubAuthProvider()
@@ -31,6 +32,7 @@ export default function Login() {
 
   return (
     <div className="h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 grid place-items-center">
+      <Title>Financify | Login</Title>
       <div className="px-8 py-16 w-[90%] max-w-[32rem] flex flex-col items-center rounded-lg bg-white">
         <h1 className="mb-2 text-5xl font-bold tracking-tighter text-clip bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
           Financify
